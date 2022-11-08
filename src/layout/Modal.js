@@ -47,7 +47,7 @@ export default function Modal({ user, data, selectedItem, setSelectedItem }) {
         } else {
             gids = [selectedItem.gid]
         }
-        fetch("http://localhost:5001/shipping", {
+        fetch("https://factorypure-server.herokuapp.com/shipping", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

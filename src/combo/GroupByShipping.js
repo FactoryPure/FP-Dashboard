@@ -19,7 +19,7 @@ export default function GroupByShipping({ user, data, setSelectedItem }) {
         const confirm = window.confirm("Are you sure?")
         const override = gids[0].includes("Collection") ? false : true
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://factorypure-server.herokuapp.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

@@ -20,10 +20,10 @@ function App() {
 
   const getData = async () => {
     const result = {
-      products: await fetch("http://localhost:5001/products").then(res => res.json()),
-      collections: await fetch("http://localhost:5001/collections").then(res => res.json()),
-      brands: await fetch("http://localhost:5001/shipping").then(res => res.json()),
-      overrides: await fetch("http://localhost:5001/shipping?override=true").then(res => res.json())
+      products: await fetch("https://factorypure-server.herokuapp.com/products").then(res => res.json()),
+      collections: await fetch("https://factorypure-server.herokuapp.com/collections").then(res => res.json()),
+      brands: await fetch("https://factorypure-server.herokuapp.com/shipping").then(res => res.json()),
+      overrides: await fetch("https://factorypure-server.herokuapp.com/shipping?override=true").then(res => res.json())
     }
     result.products = result.products.map(p => {
       return {
@@ -119,7 +119,7 @@ function App() {
     const token = sessionStorage.getItem("session")
     console.log(searchParams.get("token"))
     if (token) {
-      fetch(`http://localhost:5001/users/verify?token=${token}`)
+      fetch(`https://factorypure-server.herokuapp.com/users/verify?token=${token}`)
       .then(res => res.json())
       .then(res => {
         if (res.success) {
@@ -131,7 +131,7 @@ function App() {
       //navigate("/")
     }
     getData().then(setData)
-    fetch("http://localhost:5001/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => setNotifications(res.notifications))
+    fetch("https://factorypure-server.herokuapp.com/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => setNotifications(res.notifications))
     return () => clearInterval(getNotifications)
   }, [])
 
@@ -139,7 +139,7 @@ function App() {
   const checkForNotifications = (notifications) => {
     clearInterval(getNotifications)
     getNotifications = setInterval(() => {
-      fetch("http://localhost:5001/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => {
+      fetch("https://factorypure-server.herokuapp.com/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => {
         if (JSON.stringify(res.notifications) != JSON.stringify(notifications)) {
           setNotifications(res.notifications)
           getData().then(setData)
@@ -155,7 +155,7 @@ function App() {
   }, [data])
   const handleLogin = async (e) => {
     e.preventDefault()
-    const response = await fetch("http://localhost:5001/users/login", {
+    const response = await fetch("https://factorypure-server.herokuapp.com/users/login", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -177,7 +177,7 @@ function App() {
     e.preventDefault()
     const token = searchParams.get("token")
     if (!token) alert("Invalid token")
-    const response = await fetch("http://localhost:5001/users/create", {
+    const response = await fetch("https://factorypure-server.herokuapp.com/users/create", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

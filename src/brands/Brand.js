@@ -18,7 +18,7 @@ export default function Brand({ brand, user, products, setSelectedItem, setScree
     const deleteShipping = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://factorypure-server.herokuapp.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

@@ -3,7 +3,7 @@ import logo from "../logo.png"
 export default function Topbar({ title, user, notifications }) {
     const showNotifications = () => {
         console.log(notifications)
-        fetch("http://localhost:5001/notifications", {
+        fetch("https://factorypure-server.herokuapp.com/notifications", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
