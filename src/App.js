@@ -117,7 +117,7 @@ function App() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("session")
-    console.log(searchParams.get("token"))
+    const queryToken = searchParams.get("token")
     if (token) {
       fetch(`https://factorypure-server.herokuapp.com/users/verify?token=${token}`)
       .then(res => res.json())
@@ -129,7 +129,7 @@ function App() {
       })
     } else if (user) {
       navigate("/")
-    } else {
+    } else if (!queryToken) {
       navigate("/login")
     }
     getData().then(setData)
@@ -281,11 +281,20 @@ function App() {
     :
       <Routes>
         <Route path="/login" element={
-          <form onSubmit={handleLogin} class="login">
-            <input type="email" name="email" id="email" placeholder="email" />
-            <input type="password" name="password" id="password" placeholder="password" />
-            <button type="submit">SUBMIT</button>
-          </form>
+          <>
+            <form onSubmit={handleLogin} class="login">
+              <input type="email" name="email" id="email" placeholder="email" />
+              <input type="password" name="password" id="password" placeholder="password" />
+              <button type="submit">SUBMIT</button>
+            </form>
+            <style>
+              {`
+                body {
+                  padding: 0;
+                }
+              `}
+            </style>
+          </>
         }/>
         <Route path="/create" element={
           <>
