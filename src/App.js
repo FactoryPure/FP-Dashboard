@@ -127,8 +127,10 @@ function App() {
           //navigate("/all")
         }
       })
+    } else if (user) {
+      navigate("/")
     } else {
-      //navigate("/")
+      navigate("/login")
     }
     getData().then(setData)
     fetch("https://factorypure-server.herokuapp.com/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => setNotifications(res.notifications))

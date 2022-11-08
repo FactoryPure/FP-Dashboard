@@ -64,7 +64,10 @@ export default function Modal({ user, data, selectedItem, setSelectedItem }) {
                 override
             })
         })
-        .then(() => navigate("/all"))
+        .then(() => {
+            setSelectedItem(null)
+            navigate("/all")
+        })
         // .then(res => res.json())
         // .then(console.log)
         .catch(console.log)

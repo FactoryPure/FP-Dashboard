@@ -9,7 +9,7 @@ export default function Layout({ children, user, data, notifications, selectedIt
         <>
             <Topbar user={user} title={title} notifications={notifications} />
             <Sidebar data={data} screen={screen} setScreen={setScreen} />
-            <Modal data={data} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+            <Modal user={user} data={data} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
             <main className="content">
                 {children}
             </main>
