@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import "../products/ProductScreen.css"
 import GroupByShipping from "./GroupByShipping"
 import UnGrouped from "./UnGrouped"
 
 export default function ComboScreen({ user, data, title, items, products, setSelectedItem, search, setSearch, setScreen }) {
+    const navigate = useNavigate()
     const [visibleItems, setVisibleItems] = useState(50)
     const [filteredItems, setFilteredItems] = useState(items)
     const [grouping, setGrouping] = useState("")
@@ -53,7 +55,10 @@ export default function ComboScreen({ user, data, title, items, products, setSel
         <div className="products">
             <div className="products__row">
                 <h2>{title}</h2>
-                {!title.includes("Ending") && <button className="products__new" onClick={() => setScreen("new-product")}>+</button>}
+                {!title.includes("Ending") && <button className="products__new" onClick={() => {
+                    setScreen("new-product")
+                    navigate("/new")
+                }}>+</button>}
                 <div class="products__search-box">
                     <input 
                         class="products__search"

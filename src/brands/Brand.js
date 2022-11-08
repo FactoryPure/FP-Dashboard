@@ -34,7 +34,7 @@ export default function Brand({ brand, user, products, setSelectedItem, setScree
     }    
     const toggleProduct = () => {
         setSearch(brand[0])
-        setScreen("products")
+        navigate("/products")
     }
     return (
         <div className="brands__product">

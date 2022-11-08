@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Brand from "./Brand"
 import "./BrandScreen.css"
 
 export default function BrandScreen({ user, brands, products, setSelectedItem, setScreen, search, setSearch }) {
+    const navigate = useNavigate()
     const [visibleBrands, setVisibleBrands] = useState(50)
     const [filteredBrands, setFilteredBrands] = useState(brands)
     useEffect(() => {
@@ -42,7 +44,10 @@ export default function BrandScreen({ user, brands, products, setSelectedItem, s
         <div class="brands">
             <div className="brands__row">
                 <h2>Brands</h2>
-                <button className="brands__new" onClick={() => setScreen("new-brand")}>+</button>
+                <button className="brands__new" onClick={() => {
+                    setScreen("new-brand")
+                    navigate("/new")
+                }}>+</button>
                 <div class="brands__search-box">
                     <input 
                         class="brands__search"

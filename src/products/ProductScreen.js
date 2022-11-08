@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import Product from "./Product"
 
 import "./ProductScreen.css"
 
 export default function ProductScreen({ user, products, setSelectedItem, search, setSearch, setScreen }) {
+    const navigate = useNavigate()
     const [visibleProducts, setVisibleProducts] = useState(50)
     const [filteredProducts, setFilteredProducts] = useState(products)
     useEffect(() => {
@@ -43,7 +45,10 @@ export default function ProductScreen({ user, products, setSelectedItem, search,
         <div className="products">
             <div className="products__row">
                 <h2>Products</h2>
-                <button className="products__new" onClick={() => setScreen("new-product")}>+</button>
+                <button className="products__new" onClick={() => () => {
+                    setScreen("new-product")
+                    navigate("/new")
+                }}>+</button>
                 <div class="products__search-box">
                     <input 
                         class="products__search"
