@@ -21,18 +21,43 @@
     padding: 8px;
     border-bottom: 1px solid #4A4A4A;
 }
+.products__product__details {
+    margin-left: 8px;
+    margin-bottom: 8px;
+}
+.products__product__details__inner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.products__product__details__heading-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+.products__product__details__heading {
+    font-size: 16px;
+    font-weight: 700;
+    color:rgb(0, 60, 90)
+}
+.products__product__details__heading--override {
+    color: orangered;
+}
 .products__product__main {
     display: flex;
     align-items: center;
     width: 100%;
-    gap: 32px;
+    gap: 16px;
+    row-gap: 4px;
     position: relative;
+    flex-wrap: wrap;
 }
 .products__variant-identifier {
     position: relative;
     top: -1px;
     left: -24px;
-    margin-right: -46px;
+    margin-right: -32px;
     font-size: 24px;
 
 }
@@ -70,6 +95,7 @@
 .products__product__btn-box {
     margin-left: auto;
     display: flex;
+    justify-content: flex-end;
     gap: 8px;
 }
 .products__product__button {
@@ -93,10 +119,12 @@
 }
 .products__variants__variant {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     width: 100%;
     padding-left: 8px;
     gap: 32px;
+    row-gap: 4px;
     border-bottom: 1px solid #CDCDCD;
     padding-top: 6px;
     padding-bottom: 6px;
@@ -111,7 +139,7 @@
 }
 .products__variants__variant h3 {
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 700;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: hidden;
@@ -180,6 +208,17 @@
     max-height: 0px;
     overflow: hidden;
     transition: all 0.3s;
-    border-top: 1px solid #4A4A4A;
-    background-color: rgba(255, 166, 0, 0.1);
+    border-bottom: 1px solid #4A4A4A;
+    background-color: rgba(0, 60, 90, 0.03);
+    padding: 0 16px;
+}
+.products__product__button__small--delete {
+    border: 0;
+    color: rgba(180,0,0);
+    background: transparent;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 18px;
+    margin-bottom: 4px;
+    cursor: pointer;
 }

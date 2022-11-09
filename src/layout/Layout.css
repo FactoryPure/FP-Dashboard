@@ -139,3 +139,10 @@
 .topbar__notifications {
     margin-left: auto;
 }
+.modal__form__override {
+    display: block;
+    height: 40px !important;
+    width: 100% !important;
+    border: 0 !important;
+    border-bottom: 1px solid #4A4A4A !important;
+}

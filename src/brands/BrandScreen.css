@@ -178,10 +178,11 @@
 .brands__end {
     color: rgba(0,60,90);
     font-weight: 700;
+    font-size: 16px;
     text-transform: uppercase;
 }
 .brands__end--soon {
-    color: rgb(186, 106, 0);
+    color: orangered;
 }
 .brands__end--ended {
     color: rgb(180,0,0);

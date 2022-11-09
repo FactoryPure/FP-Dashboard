@@ -1,26 +1,19 @@
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import "../products/ProductScreen.css"
-import { getData } from "../redux/data"
-import { getUser } from "../redux/user"
-import GroupByShipping from "./GroupByShipping"
-import UnGrouped from "./UnGrouped"
 
-export default function ComboScreen({ title, items, products, search, setSearch, setScreen }) {
+export default function Screen({ data, title, mode, setSelectedItem, search, setSearch }) {
     const navigate = useNavigate()
-    const [visibleItems, setVisibleItems] = useState(50)
-    const [filteredItems, setFilteredItems] = useState(items)
+    const [visibleProducts, setVisibleProducts] = useState(50)
+    const [filteredProducts, setFilteredProducts] = useState(products)
     const [grouping, setGrouping] = useState("")
     useEffect(() => {
         const loadmore = document.querySelector(".js-loadmore")
         const loadObserver = new IntersectionObserver(entries => {
             entries.forEach(e => {
                 if (e.isIntersecting) {
-                    if (visibleItems < filteredItems.length) {
+                    if (visibleProducts < filteredProducts.length) {
                         loadmore.style.display = ""
                         setTimeout(() => {
-                            setVisibleItems(visibleItems + 50)
+                            setVisibleProducts(visibleProducts + 50)
                         }, 500)
                     } else {
                         loadmore.style.display = "none"
@@ -30,20 +23,12 @@ export default function ComboScreen({ title, items, products, search, setSearch,
         })
         if (loadmore) loadObserver.observe(loadmore)
         return () => loadObserver.disconnect()
-    }, [visibleItems, filteredItems, grouping])
+    }, [visibleProducts, filteredProducts])
     useEffect(() => {
         if (document.querySelector(".js-loadmore")) document.querySelector(".js-loadmore").style.display = ""
-        setVisibleItems(50)
-        setFilteredItems(items.filter(p => {
-            if (p.title) {
-                return p.title.toLowerCase().includes(search.toLowerCase())
-            } else {
-                return p[0].toLowerCase().includes(search.toLowerCase())
-            }
-        }))
-    }, [search, items])
-    useEffect(() => {
-    }, [grouping])
+        setVisibleProducts(50)
+        setFilteredProducts(products.filter(p => p.title.toLowerCase().includes(search.toLowerCase())))
+    }, [search, products])
     const Mag = () => {
         return (
             <svg class="products__mag" xmlns="http://www.w3.org/2000/svg" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 118.783 118.783">
@@ -53,15 +38,11 @@ export default function ComboScreen({ title, items, products, search, setSearch,
             </svg>
         )
     }
-
     return (
         <div className="products">
             <div className="products__row">
                 <h2>{title}</h2>
-                {!title.includes("Ending") && <button className="products__new" onClick={() => {
-                    setScreen("new-product")
-                    navigate("/new")
-                }}>+</button>}
+                <button className="products__new" onClick={() => navigate(`/new?type=${mode}`)}>+</button>
                 <div class="products__search-box">
                     <input 
                         class="products__search"
@@ -74,16 +55,32 @@ export default function ComboScreen({ title, items, products, search, setSearch,
                     />
                     <Mag />
                 </div>
-                <select onChange={(e) => setGrouping(e.target.value)}>
-                    <option value="">Group By</option>
-                    <option value="message_id">Shipping ID</option>
-                </select>
+                {title == "All" &&
+                    <select onChange={(e) => setGrouping(e.target.value)}>
+                        <option value="">Group By</option>
+                        <option value="message_id">Shipping ID</option>
+                    </select>
+                }
             </div>
-            {grouping === "message_id" ? 
-                <GroupByShipping />
-            :
-                <UnGrouped filteredItems={filteredItems} visibleItems={visibleItems} search={search} setSearch={setSearch} products={products} setScreen={setScreen} />
-            }
+            <div className="products__main">
+                {filteredProducts.slice(0, visibleProducts).map((p, index) => <Product user={user} product={p} key={p.title + "-" + index} setSelectedItem={setSelectedItem} />)}
+                <div class="js-loadmore loading">
+                    <svg version="1.1" id="L3" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
+                        viewBox="0 0 100 100" enableBackground="new 0 0 0 0">
+                        <circle fill="none" stroke="black" strokeWidth="4" cx="50" cy="50" r="44" style={{opacity:0.5}}/>
+                        <circle fill="black" stroke="black" strokeWidth="3" cx="8" cy="54" r="6" >
+                            <animateTransform
+                                attributeName="transform"
+                                dur="2s"
+                                type="rotate"
+                                from="0 50 48"
+                                to="360 50 52"
+                                repeatCount="indefinite" 
+                            />
+                        </circle>
+                    </svg>
+                </div>
+            </div>
         </div>
     )
 }

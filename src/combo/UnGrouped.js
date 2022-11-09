@@ -4,7 +4,7 @@ import Product from "../products/Product";
 export default function UnGrouped({user, filteredItems, visibleItems, search, setSearch, setSelectedItem, products, setScreen}) {
     return (
         <div className="products__main">
-            {filteredItems.slice(0, visibleItems).map((i, index) => i.title ? <Product user={user} product={i} key={i.title + "-" + index} setSelectedItem={setSelectedItem} /> : <Brand brand={i} products={products} key={i.title + "-" + index} setSelectedItem={setSelectedItem} setScreen={setScreen} search={search} setSearch={setSearch} /> )}
+            {filteredItems.slice(0, visibleItems).map((i, index) => i.title ? <Product product={i} key={i.title + "-" + index} /> : <Brand brand={i} products={products} key={i.title + "-" + index} setScreen={setScreen} search={search} setSearch={setSearch} /> )}
             <div class="js-loadmore loading">
                 <svg version="1.1" id="L3" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                     viewBox="0 0 100 100" enableBackground="new 0 0 0 0">

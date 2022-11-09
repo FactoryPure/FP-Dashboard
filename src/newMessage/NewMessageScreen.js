@@ -5,6 +5,7 @@ import "./NewMessageScreen.css"
 export default function NewMessageScreen({ user, type, products, brands }) {
     const navigate = useNavigate()
     const [mode, setMode] = useState(type ? type : "product")
+    const [override, setOverride] = useState(false)
     const [formData, setFormData] = useState({
         gids: [],
         pdp_line_1: "",
@@ -43,7 +44,7 @@ export default function NewMessageScreen({ user, type, products, brands }) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                gid: selectedGIDs.gids,
+                gids: selectedGIDs.gids,
                 pdp_line_1: formData.pdp_line_1,
                 pdp_line_2: formData.pdp_line_2,
                 cart_line_1: formData.cart_line_1,
@@ -51,7 +52,8 @@ export default function NewMessageScreen({ user, type, products, brands }) {
                 message_id: formData.message_id,
                 end_date: formData.end_date,
                 email: user.email,
-                override: mode === "product"
+                table: mode === "product" ? "skus" : "brands",
+                override: formData.override
             })
         }).then(() => navigate("/all")).catch(console.log)
     }
@@ -76,12 +78,9 @@ export default function NewMessageScreen({ user, type, products, brands }) {
     useEffect(() => {
         const filteredProducts = products.filter(p => p.title.toLowerCase().includes(search.toLowerCase()))
         setFilteredProducts(filteredProducts)
-        const filteredBrands = brands.filter(b => b[0].toLowerCase().includes(search.toLowerCase()))
+        const filteredBrands = brands.filter(b => b.brandTitle.toLowerCase().includes(search.toLowerCase()))
         setFilteredBrands(filteredBrands)
     }, [search])
-    useEffect(() => {
-        console.log(selectedGIDs)
-    }, [selectedGIDs])
     useEffect(() => {
         setSelectedGIDs({
             gids: [],
@@ -92,6 +91,16 @@ export default function NewMessageScreen({ user, type, products, brands }) {
         setFormData({
             ...formData,
             [target.name]: target.value
+        })
+    }
+    const handleOverride = ({ target }) => {
+        if (target.value == "true") setFormData({
+            ...formData,
+            override: true
+        })
+        else setFormData({
+            ...formData,
+            override: false
         })
     }
     return (
@@ -105,6 +114,35 @@ export default function NewMessageScreen({ user, type, products, brands }) {
                 </select>
             </div>
             <form class="new-message__form" onSubmit={handleSubmit}>
+                <div class="new-message__form__row new-message__form__row--flex">
+                    <div class="new-message__form__row">
+                        <label htmlFor="message_id">Shipping ID</label>
+                        <input 
+                            id="message_id" 
+                            type="text" 
+                            name="message_id" 
+                            value={formData.message_id}
+                            onChange={handleChange}
+                        />                    
+                    </div>
+                    <div class="new-message__form__row">
+                        <label htmlFor="end_date">End date</label>
+                        <input 
+                            id="end_date" 
+                            type="date" 
+                            name="end_date" 
+                            value={formData.end_date}
+                            onChange={handleChange}
+                        />                    
+                    </div>
+                    <div class="modal__form__row--half">
+                        <label htmlFor="override">Mode</label>
+                        <select class="modal__form__override" name="override" onChange={handleOverride}>
+                            <option value="false">Default</option>
+                            <option value="true">Override</option>
+                        </select>
+                    </div>
+                </div>
                 <div class="new-message__form__row">
                     <label htmlFor="pdp_line_1">PDP Line 1</label>
                     <input 
@@ -142,28 +180,6 @@ export default function NewMessageScreen({ user, type, products, brands }) {
                         value={formData.cart_line_2}
                         onChange={handleChange}
                     />                    
-                </div>
-                <div class="new-message__form__row new-message__form__row--flex">
-                    <div class="new-message__form__row">
-                        <label htmlFor="message_id">Shipping ID</label>
-                        <input 
-                            id="message_id" 
-                            type="text" 
-                            name="message_id" 
-                            value={formData.message_id}
-                            onChange={handleChange}
-                        />                    
-                    </div>
-                    <div class="new-message__form__row">
-                        <label htmlFor="end_date">End date</label>
-                        <input 
-                            id="end_date" 
-                            type="date" 
-                            name="end_date" 
-                            value={formData.end_date}
-                            onChange={handleChange}
-                        />                    
-                    </div>
                 </div>
                 {mode === "product" 
                 ? 
@@ -208,9 +224,9 @@ export default function NewMessageScreen({ user, type, products, brands }) {
                             {filteredBrands.map(b => {
                                 return (
                                     <>
-                                        <div onClick={() => toggleSelect(b[1])} class="new-message__list-item">
-                                            <div class={selectedGIDs.gids.includes(b[1].gid) ? "checked checkbox" : "checkbox"}>&nbsp;</div>
-                                            <p>{b[0]}</p>
+                                        <div onClick={() => toggleSelect(b)} class="new-message__list-item">
+                                            <div class={selectedGIDs.gids.includes(b.gid) ? "checked checkbox" : "checkbox"}>&nbsp;</div>
+                                            <p>{b.brandTitle}</p>
                                         </div>
                                     </>
                                 )

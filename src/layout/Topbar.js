@@ -1,6 +1,9 @@
+import { useSelector } from "react-redux"
 import logo from "../logo.png"
+import { getUser } from "../redux/user"
 
-export default function Topbar({ title, user, notifications }) {
+export default function Topbar({ title, notifications }) {
+    const user = useSelector(getUser)
     const showNotifications = () => {
         console.log(notifications)
         fetch("https://factorypure-server.herokuapp.com/notifications", {

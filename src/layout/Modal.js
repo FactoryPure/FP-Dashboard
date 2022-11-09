@@ -1,71 +1,47 @@
 import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
+import { getData } from "../redux/data"
+import { getSelected, setSelected } from "../redux/selected"
+import { getUser } from "../redux/user"
 
-export default function Modal({ user, data, selectedItem, setSelectedItem }) {
-    const [overwritten, setOverwritten] = useState(false)
+export default function Modal() {
+    const { user, selected } = useSelector(state => state)
+    const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleChange = ({ target }) => {
-        if (selectedItem.type == "product") {
-            if (target.name === "message_id" && !data.productsMappedById[target.value]) {
-                setOverwritten(false)
-                setSelectedItem({
-                    ...selectedItem,
-                    multi_title: null,
-                    multi_gid: null,
-                    [target.name]: target.value
-                })
-            } else {
-                setSelectedItem({
-                    ...selectedItem,
-                    [target.name]: target.value
-                })
-            }
-        } else {
-            if (target.name === "message_id" && !data.brandsMappedById[target.value]) {
-                setOverwritten(false)
-                setSelectedItem({
-                    ...selectedItem,
-                    multi_title: null,
-                    multi_gid: null,
-                    [target.name]: target.value
-                })
-            } else {
-                setSelectedItem({
-                    ...selectedItem,
-                    [target.name]: target.value
-                })
-            }
-        }
+        dispatch(setSelected({
+            ...selected,
+            [target.name]: target.value
+        }))
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        const override = !e.target["gid"].value.includes("Collection")
-        let gids;
-        if (selectedItem.multi_gid) {
-            if (selectedItem.multi_gid.includes(selectedItem.gid)) gids = selectedItem.multi_gid
-            else gids = [...selectedItem.multi_gid, selectedItem.gid]
-        } else {
-            gids = [selectedItem.gid]
-        }
+        const gids = selected.gids ? selected.gids : [selected.gid]
+        let messageId;
+        if (selected.mode === "override") messageId = selected.or_message_id ? selected.or_message_id : random
+        else messageId = selected.message_id ? selected.message_id : random
+
         fetch("https://factorypure-server.herokuapp.com/shipping", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                gid: gids,
-                pdp_line_1: selectedItem.pdp_line_1,
-                pdp_line_2: selectedItem.pdp_line_2,
-                cart_line_1: selectedItem.cart_line_1,
-                cart_line_2: selectedItem.cart_line_2,
-                message_id: selectedItem.message_id ? selectedItem.message_id : random,
-                end_date: selectedItem.end_date,
+                gids,
+                pdp_line_1: selected.mode === "override" ? selected.or_pdp_line_1 : selected.pdp_line_1,
+                pdp_line_2: selected.mode === "override" ? selected.or_pdp_line_2 : selected.pdp_line_2,
+                cart_line_1: selected.mode === "override" ? selected.or_cart_line_1 : selected.cart_line_1,
+                cart_line_2: selected.mode === "override" ? selected.or_cart_line_2 : selected.cart_line_2,
+                message_id: messageId,
+                end_date: selected.mode === "override" ? selected.or_end_date : selected.end_date,
                 email: user.email,
-                override
+                table: selected.type === "Product" ? "skus" : "brands",
+                override: selected.mode === "override"
             })
         })
         .then(() => {
-            setSelectedItem(null)
+            dispatch(setSelected(null))
             navigate("/all")
         })
         // .then(res => res.json())
@@ -74,129 +50,176 @@ export default function Modal({ user, data, selectedItem, setSelectedItem }) {
         
     }
     const random = String(Math.floor(Date.now()))
-    useEffect(() => {
-        if (!selectedItem) setOverwritten(false)
-        if (selectedItem && selectedItem.type == "Product") {
-            if (selectedItem && data.productsMappedById[selectedItem.message_id] && data.productsMappedById[selectedItem.message_id].products.length >= 1 && !overwritten && selectedItem.message_id != undefined) {
-                setOverwritten(true)
-                const group = data.productsMappedById[selectedItem.message_id]
-                let multi_title;
-                if (data.productsMappedById[selectedItem.message_id].products.find(p => p.gid == selectedItem.gid) && data.productsMappedById[selectedItem.message_id].products.length > 1) {
-                    multi_title = `${selectedItem.title} + ${group.products.length - 1} More`
-                } else if (data.productsMappedById[selectedItem.message_id].products.length > 1) {
-                    multi_title = `${selectedItem.title} + ${group.products.length} More`
-                }
-                setSelectedItem({
-                    ...selectedItem,
-                    multi_title: multi_title,
-                    multi_gid: group.products.map(p => p.gid),
-                    pdp_line_1: group.products[0].pdp_line_1,
-                    pdp_line_2: group.products[0].pdp_line_2,
-                    cart_line_1: group.products[0].cart_line_1,
-                    cart_line_2: group.products[0].cart_line_2,
-                    message_id: group.products[0].message_id,
-                    end_date: group.products[0].end_date
-                })
-            }
-        } else if (selectedItem && selectedItem.type == "Brand") {
-            if (selectedItem && data.brandsMappedById[selectedItem.message_id] && data.brandsMappedById[selectedItem.message_id].brands.length >= 1 && !overwritten && selectedItem.message_id != undefined) {
-                setOverwritten(true)
-                const group = data.brandsMappedById[selectedItem.message_id]
-                let multi_title;
-                if (data.brandsMappedById[selectedItem.message_id].brands.find(b => b[1].gid == selectedItem.gid) && data.brandsMappedById[selectedItem.message_id].brands.length > 1) {
-                    multi_title = `${selectedItem.title} + ${group.brands.length - 1} More`
-                } else if (data.brandsMappedById[selectedItem.message_id].brands.length > 1) {
-                    multi_title = `${selectedItem.title} + ${group.brands.length} More`
-                }
-                setSelectedItem({
-                    ...selectedItem,
-                    multi_title: multi_title,
-                    multi_gid: group.brands.map(b => b[1].gid),
-                    pdp_line_1: group.brands[0][1].pdp_line_1,
-                    pdp_line_2: group.brands[0][1].pdp_line_2,
-                    cart_line_1: group.brands[0][1].cart_line_1,
-                    cart_line_2: group.brands[0][1].cart_line_2,
-                    message_id: group.brands[0][1].message_id,
-                    end_date: group.brands[0][1].end_date
-                })
-            }
-        }
-    }, [selectedItem])
+    const OverrideForm = () => {
+        return (
+            <form className="modal__form" onSubmit={handleSubmit}>
+                <div className="modal__form__row">
+                    <p class="modal__form__type">{selected.type}</p>
+                </div>
+                <div className="modal__form__row modal__form__row--flex">
+                    <div class="modal__form__row--half">
+                        <label htmlFor="or_message_id">Message ID</label>
+                        <input 
+                            id="or_message_id"
+                            name="or_message_id"
+                            value={selected.or_message_id}
+                            onChange={handleChange}
+                            type="text"
+                        />
+                    </div>
+                    <div class="modal__form__row--half">
+                        <label htmlFor="or_end_date">End Date</label>
+                        <input 
+                            id="or_end_date"
+                            name="or_end_date"
+                            value={selected.or_end_date}
+                            onChange={handleChange}
+                            type="date"
+                        />
+                    </div>
+                    <div class="modal__form__row--half">
+                        <label htmlFor="override">Mode</label>
+                        <select class="modal__form__override" id="mode" name="mode" value={selected.mode} onChange={handleChange}>
+                            <option value="default">Default</option>
+                            <option value="override">Override</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="modal__form__row">
+                    <label htmlFor="or_pdp_line_1">PDP Line 1</label>
+                    <input 
+                        id="or_pdp_line_1"
+                        name="or_pdp_line_1"
+                        value={selected.or_pdp_line_1}
+                        onChange={handleChange}
+                        type="text"
+                    />
+                </div>
+                <div className="modal__form__row">
+                    <label htmlFor="or_pdp_line_2">PDP Line 2</label>
+                    <input 
+                        id="or_pdp_line_2"
+                        name="or_pdp_line_2"
+                        value={selected.or_pdp_line_2}
+                        onChange={handleChange}
+                        type="text"
+                    />
+                </div>
+                <div className="modal__form__row">
+                    <label htmlFor="or_cart_line_1">Cart Line 1</label>
+                    <input 
+                        id="or_cart_line_1"
+                        name="or_cart_line_1"
+                        value={selected.or_cart_line_1}
+                        onChange={handleChange}
+                        type="text"
+                    />
+                </div>
+                <div className="modal__form__row">
+                    <label htmlFor="or_cart_line_2">Cart Line 2</label>
+                    <input 
+                        id="or_cart_line_2"
+                        name="or_cart_line_2"
+                        value={selected.or_cart_line_2}
+                        onChange={handleChange}
+                        type="text"
+                    />
+                </div>
+                <button className="modal__form__submit">Submit</button>
+            </form>
+        )
+    }
+    const DefaultForm = () => {
+        return (
+            <form className="modal__form" onSubmit={handleSubmit}>
+                <div className="modal__form__row">
+                    <p class="modal__form__type">{selected.type}</p>
+                </div>
+                <div className="modal__form__row modal__form__row--flex">
+                    <div class="modal__form__row--half">
+                        <label htmlFor="message_id">Message ID</label>
+                        <input 
+                            id="message_id"
+                            name="message_id"
+                            value={selected.message_id}
+                            onChange={handleChange}
+                            type="text"
+                        />
+                    </div>
+                    <div class="modal__form__row--half">
+                        <label htmlFor="end_date">End Date</label>
+                        <input 
+                            id="end_date"
+                            name="end_date"
+                            value={selected.end_date}
+                            onChange={handleChange}
+                            type="date"
+                        />
+                    </div>
+                    <div class="modal__form__row--half">
+                        <label htmlFor="override">Mode</label>
+                        <select class="modal__form__override" id="mode" name="mode" value={selected.mode} onChange={handleChange}>
+                            <option value="default">Default</option>
+                            <option value="override">Override</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="modal__form__row">
+                    <label htmlFor="pdp_line_1">PDP Line 1</label>
+                    <input 
+                        id="pdp_line_1"
+                        name="pdp_line_1"
+                        value={selected.pdp_line_1}
+                        onChange={handleChange}
+                        type="text"
+                    />
+                </div>
+                <div className="modal__form__row">
+                    <label htmlFor="pdp_line_2">PDP Line 2</label>
+                    <input 
+                        id="pdp_line_2"
+                        name="pdp_line_2"
+                        value={selected.pdp_line_2}
+                        onChange={handleChange}
+                        type="text"
+                    />
+                </div>
+                <div className="modal__form__row">
+                    <label htmlFor="cart_line_1">Cart Line 1</label>
+                    <input 
+                        id="cart_line_1"
+                        name="cart_line_1"
+                        value={selected.cart_line_1}
+                        onChange={handleChange}
+                        type="text"
+                    />
+                </div>
+                <div className="modal__form__row">
+                    <label htmlFor="cart_line_2">Cart Line 2</label>
+                    <input 
+                        id="cart_line_2"
+                        name="cart_line_2"
+                        value={selected.cart_line_2}
+                        onChange={handleChange}
+                        type="text"
+                    />
+                </div>
+                <button className="modal__form__submit">Submit</button>
+            </form>
+        )
+    }
     return (
-        <div className={selectedItem ? 'modal modal--visible' : 'modal'}>
-            {selectedItem && (
+        <div className={selected ? 'modal modal--visible' : 'modal'}>
+            {selected && (
                 <div className="modal__inner">
-                    <div className="modal__close" onClick={() => setSelectedItem(null)}>&times;</div>
-                    <h2 className="modal__title">{selectedItem.multi_title ? selectedItem.multi_title : selectedItem.title}</h2>
-                    <form className="modal__form" onSubmit={handleSubmit}>
-                        <input type="hidden" id="gid" name="gid" value={selectedItem.gid} />
-                        <div className="modal__form__row">
-                            <p class="modal__form__type">{selectedItem.type}</p>
-                        </div>
-                        <div className="modal__form__row">
-                            <label htmlFor="pdp_line_1">PDP Line 1</label>
-                            <input 
-                                id="pdp_line_1"
-                                name="pdp_line_1"
-                                value={selectedItem.pdp_line_1}
-                                onChange={handleChange}
-                                type="text"
-                            />
-                        </div>
-                        <div className="modal__form__row">
-                            <label htmlFor="message_id">PDP Line 2</label>
-                            <input 
-                                id="pdp_line_2"
-                                name="pdp_line_2"
-                                value={selectedItem.pdp_line_2}
-                                onChange={handleChange}
-                                type="text"
-                            />
-                        </div>
-                        <div className="modal__form__row">
-                            <label htmlFor="pdp_line_1">Cart Line 1</label>
-                            <input 
-                                id="cart_line_1"
-                                name="cart_line_1"
-                                value={selectedItem.cart_line_1}
-                                onChange={handleChange}
-                                type="text"
-                            />
-                        </div>
-                        <div className="modal__form__row">
-                            <label htmlFor="pdp_line_1">Cart Line 2</label>
-                            <input 
-                                id="cart_line_2"
-                                name="cart_line_2"
-                                value={selectedItem.cart_line_2}
-                                onChange={handleChange}
-                                type="text"
-                            />
-                        </div>
-                        <div className="modal__form__row modal__form__row--flex">
-                            <div class="modal__form__row--half">
-                                <label htmlFor="message_id">Shipping ID</label>
-                                <input 
-                                    id="message_id"
-                                    name="message_id"
-                                    value={selectedItem.message_id}
-                                    onChange={handleChange}
-                                    type="text"
-                                />
-                            </div>
-                            <div class="modal__form__row--half">
-                                <label htmlFor="end_date">End Date</label>
-                                <input 
-                                    id="end_date"
-                                    name="end_date"
-                                    value={selectedItem.end_date}
-                                    onChange={handleChange}
-                                    type="date"
-                                />
-                            </div>
-                        </div>
-                        <button className="modal__form__submit">Submit</button>
-                    </form>
+                    <div className="modal__close" onClick={() => dispatch(setSelected(null))}>&times;</div>
+                    <h2 className="modal__title">{selected.title}</h2>
+                    {selected.mode === "override" 
+                    ?
+                        <OverrideForm />
+                    :
+                        <DefaultForm />
+                    }
                 </div>
             )}
         </div>

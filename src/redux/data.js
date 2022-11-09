@@ -1,25 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit"
 
-export const infoSlice = createSlice({
-    name: "information",
+export const dataSlice = createSlice({
+    name: "data",
     initialState: {
-        data: {
-            products: [],
-            productsMappedById: [],
-            brands: [],
-            brandsMappedById: [],
-            collections: [],
-            ending: [],
-            all_messages: []
-        }
+        products: [],
+        productsMappedById: [],
+        brands: [],
+        brandsMappedById: [],
+        collections: [],
+        ending: [],
+        all_messages: []
     },
     reducers: {
-        setInfo: (state, action) => {
-            state.data = action.payload
+        setData: (state, action) => {
+            return action.payload
         }
     }
 })
 
-export const { setInfo } = infoSlice.actions
-
-export default infoSlice.reducer
+export const getData = state => state.data
+export const { setData } = dataSlice.actions
+export default dataSlice.reducer

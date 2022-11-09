@@ -4,12 +4,12 @@ import "./Layout.css"
 import Modal from "./Modal";
 import { useEffect } from "react";
 
-export default function Layout({ children, user, data, notifications, selectedItem, setSelectedItem, screen, setScreen, title }) {
+export default function Layout({ children, notifications, title }) {
     return (
         <>
-            <Topbar user={user} title={title} notifications={notifications} />
-            <Sidebar data={data} screen={screen} setScreen={setScreen} />
-            <Modal user={user} data={data} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />
+            <Topbar title={title} notifications={notifications} />
+            <Sidebar />
+            <Modal />
             <main className="content">
                 {children}
             </main>

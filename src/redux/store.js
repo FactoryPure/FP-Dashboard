@@ -1,8 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit"
-import infoRedcuer from "./data"
+import userReducer from "./user"
+import dataReducer from "./data"
+import selectedReducer from "./selected"
 
 export default configureStore({
     reducer: {
-        information: infoRedcuer
+        data: dataReducer,
+        user: userReducer,
+        selected: selectedReducer
     }
 })

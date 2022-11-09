@@ -29,7 +29,7 @@ export default function BrandScreen({ user, brands, products, setSelectedItem, s
     useEffect(() => {
         if (document.querySelector(".js-loadmore")) document.querySelector(".js-loadmore").style.display = ""
         setVisibleBrands(50)
-        setFilteredBrands(brands.filter(b => b[0].toLowerCase().includes(search.toLowerCase())))
+        setFilteredBrands(brands.filter(b => b.brandTitle.toLowerCase().includes(search.toLowerCase())))
     }, [search])
     const Mag = () => {
         return (

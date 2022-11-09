@@ -1,8 +1,11 @@
+import { useSelector } from "react-redux"
 import { useNavigate, useLocation } from "react-router-dom"
+import { getData } from "../redux/data"
 
-export default function Sidebar({ data, screen, setScreen }) {
+export default function Sidebar() {
     const navigate = useNavigate()
     const location = useLocation()
+    const data = useSelector(getData)
     return (
         <div className="sidebar">
             <div 
