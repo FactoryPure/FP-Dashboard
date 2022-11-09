@@ -124,3 +124,8 @@
     white-space: nowrap;
     align-self: center;
 }
+.modal__textarea {
+    width: 100%;
+    display: block;
+    min-height: 350px;
+}

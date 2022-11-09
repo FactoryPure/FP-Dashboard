@@ -24,9 +24,8 @@ export default function GroupByShipping() {
             }))
         }
     }
-    const deleteShipping = (gids) => {
+    const deleteShipping = (gids, table, mode) => {
         const confirm = window.confirm("Are you sure?")
-        const override = gids[0].includes("Collection") ? false : true
         if (confirm) {
             fetch("https://factorypure-server.herokuapp.com/shipping", {
                 method: "DELETE",
@@ -34,9 +33,11 @@ export default function GroupByShipping() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    gid: gids,
+                    gids,
                     email: user.email,
-                    override
+                    table,
+                    override: mode === "override",
+                    completely: false,
                 })
             })
             .catch(console.log)
@@ -96,7 +97,7 @@ export default function GroupByShipping() {
                         </div>  
                         <div className="products__product__btn-box">
                             <button className="products__product__button products__product__button--edit" onClick={() => editShipping(product, products, "product", "override")}>Edit</button>
-                            <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(products)}>Delete</button>
+                            <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(products.map(p => p.gid), "skus", "override")}>Delete</button>
                         </div>
                     </div>
                 </div>
@@ -143,7 +144,7 @@ export default function GroupByShipping() {
                         </div> 
                         <div className="products__product__btn-box">
                             <button className="products__product__button products__product__button--edit" onClick={() => editShipping(product, products, "product", "default")}>Edit</button>
-                            <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(product)}>Delete</button>
+                            <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(products.map(p => p.gid), "skus", "default")}>Delete</button>
                         </div>
                     </div>
                 </div>
@@ -191,7 +192,7 @@ export default function GroupByShipping() {
                         </div>
                         <div className="products__product__btn-box">
                             <button className="products__product__button products__product__button--edit" onClick={() => editShipping(brand, brands, "brand", "override")}>Edit</button>
-                            <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(brands.map(b => b.gid))}>Delete</button>
+                            <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(brands.map(b => b.gid), "brands", "override")}>Delete</button>
                         </div>
                     </div>
                 </div>
@@ -239,7 +240,7 @@ export default function GroupByShipping() {
                         </div>
                         <div className="products__product__btn-box">
                             <button className="products__product__button products__product__button--edit" onClick={() => editShipping(brand, brands, "brand", "default")}>Edit</button>
-                            <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(brands.map(b => b[1].gid))}>Delete</button>
+                            <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(brands.map(b => b.gid), "brands", "default")}>Delete</button>
                         </div>
                     </div>
                 </div>

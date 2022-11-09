@@ -6,6 +6,7 @@ export default function NewMessageScreen({ user, type, products, brands }) {
     const navigate = useNavigate()
     const [mode, setMode] = useState(type ? type : "product")
     const [override, setOverride] = useState(false)
+    const [bulk, setBulk] = useState(false)
     const [formData, setFormData] = useState({
         gids: [],
         pdp_line_1: "",
@@ -102,6 +103,43 @@ export default function NewMessageScreen({ user, type, products, brands }) {
             ...formData,
             override: false
         })
+    }
+    const handleBulkProducts = (e) => {
+        const values = e.target.value.split(",")
+        const map = {
+            titles: [],
+            gids: []
+        }
+        values.forEach(v => {
+            filteredProducts.forEach(p => {
+                if (p.skus) {
+                    return p.skus.find(s => {
+                        if (s.sku && s.sku.toLowerCase() == v.toLowerCase()) {
+                            map.titles.push(p.title)
+                            if (p.skus.length === 1) map.gids.push(p.gid)
+                            else map.gids.push(s.gid)
+                        }
+                    })
+                }
+            })
+        })
+        setSelectedGIDs(map)
+    }
+    const handleBulkBrands = (e) => {
+        const values = e.target.value.split(",")
+        const map = {
+            titles: [],
+            gids: []
+        }
+        values.forEach(v => {
+            filteredBrands.forEach(b => {
+                if (b.brandTitle.toLowerCase() == v.toLowerCase()) {
+                    map.titles.push(b.title)
+                    map.gids.push(b.gid)
+                }
+            })
+        })
+        setSelectedGIDs(map)
     }
     return (
         <div class="new-message">
@@ -213,6 +251,8 @@ export default function NewMessageScreen({ user, type, products, brands }) {
                                 )
                             })}
                         </div>
+                        <p onClick={() => setBulk(!bulk)}>{bulk ? "Hide bulk editor" : "Show bulk editor"}</p>
+                        {bulk && <textarea class="modal__textarea" onChange={handleBulkProducts}></textarea>}
                     </>
                 :
                     <>
@@ -232,7 +272,8 @@ export default function NewMessageScreen({ user, type, products, brands }) {
                                 )
                             })}
                         </div>
-                    </>
+                        <p onClick={() => setBulk(!bulk)}>{bulk ? "Hide bulk editor" : "Show bulk editor"}</p>
+                        {bulk && <textarea class="modal__textarea" onChange={handleBulkBrands}></textarea>}                    </>
                 }
                 <button type="submit">SUBMIT</button>
             </form>
