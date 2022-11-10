@@ -39,7 +39,7 @@ export default function NewMessageScreen({ user, type, products, brands }) {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch("https://factorypure-server.herokuapp.com/shipping", {
+        fetch("http://localhost:5001/shipping", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

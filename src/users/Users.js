@@ -5,11 +5,11 @@ export default function Users({ user }) {
     const [users, setUsers] = useState([])
     const [showCreate, setShowCreate] = useState(false)
     useEffect(() => {
-        fetch("https://factorypure-server.herokuapp.com/users").then(res => res.json()).then(setUsers)
+        fetch("http://localhost:5001/users").then(res => res.json()).then(setUsers)
     }, [])
     const createUser = (e) => {
         e.preventDefault()
-        fetch("https://factorypure-server.herokuapp.com/users/setup", {
+        fetch("http://localhost:5001/users/setup", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

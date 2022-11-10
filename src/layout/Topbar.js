@@ -6,7 +6,7 @@ export default function Topbar({ title, notifications }) {
     const user = useSelector(getUser)
     const showNotifications = () => {
         console.log(notifications)
-        fetch("https://factorypure-server.herokuapp.com/notifications", {
+        fetch("http://localhost:5001/notifications", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

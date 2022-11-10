@@ -45,7 +45,7 @@ export default function Product({ product }) {
     const deleteShipping = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("https://factorypure-server.herokuapp.com/shipping", {
+            fetch("http://localhost:5001/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -75,7 +75,7 @@ export default function Product({ product }) {
     const deleteDefault = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("https://factorypure-server.herokuapp.com/shipping", {
+            fetch("http://localhost:5001/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -94,7 +94,7 @@ export default function Product({ product }) {
     const deleteOverride = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("https://factorypure-server.herokuapp.com/shipping", {
+            fetch("http://localhost:5001/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
