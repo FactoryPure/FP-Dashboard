@@ -46,7 +46,7 @@ export default function Brand({ brand, products, setSearch }) {
     const deleteShipping = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://ec2-54-173-39-172.compute-1.amazonaws.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ export default function Brand({ brand, products, setSearch }) {
     const deleteDefault = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://ec2-54-173-39-172.compute-1.amazonaws.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -84,7 +84,7 @@ export default function Brand({ brand, products, setSearch }) {
     const deleteOverride = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://ec2-54-173-39-172.compute-1.amazonaws.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

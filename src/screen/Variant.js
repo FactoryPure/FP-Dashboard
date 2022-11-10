@@ -16,7 +16,7 @@ export default function Variant({ user, productTitle, variant, setSelectedItem }
     const deleteShipping = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://ec2-54-173-39-172.compute-1.amazonaws.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

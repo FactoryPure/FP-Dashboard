@@ -29,7 +29,7 @@ export default function Modal() {
         e.preventDefault()
         const gids = selected.gids ? selected.gids : [selected.gid]
 
-        fetch("http://localhost:5001/shipping", {
+        fetch("https://ec2-54-173-39-172.compute-1.amazonaws.com/shipping", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
