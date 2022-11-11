@@ -27,7 +27,7 @@ export default function GroupByShipping() {
     const deleteShipping = (gids, table, mode) => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("https://webdevclothing.com/shipping", {
+            fetch("http://localhost:5001/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

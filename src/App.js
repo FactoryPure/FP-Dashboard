@@ -42,11 +42,11 @@ function App() {
   }
   const initData = async () => {
     const result = {
-      products: await fetch("https://webdevclothing.com/products").then(res => res.json()),
-      collections: await fetch("https://webdevclothing.com/collections").then(res => res.json()),
+      products: await fetch("http://localhost:5001/products").then(res => res.json()),
+      collections: await fetch("http://localhost:5001/collections").then(res => res.json()),
     }
-    const shipping_brands = await fetch("https://webdevclothing.com/shipping").then(res => res.json())
-    const shipping_skus = await fetch("https://webdevclothing.com/shipping?table=skus").then(res => res.json())
+    const shipping_brands = await fetch("http://localhost:5001/shipping").then(res => res.json())
+    const shipping_skus = await fetch("http://localhost:5001/shipping?table=skus").then(res => res.json())
     result.products = result.products.map(p => {
       const matchingShippingProduct = shipping_skus.find(s => s.gid === p.gid) ? shipping_skus.find(s => s.gid === p.gid) : {}
       return {
@@ -214,7 +214,7 @@ function App() {
     const token = sessionStorage.getItem("session")
     const queryToken = searchParams.get("token")
     if (token) {
-      fetch(`https://webdevclothing.com/users/verify?token=${token}`)
+      fetch(`http://localhost:5001/users/verify?token=${token}`)
       .then(res => res.json())
       .then(res => {
         if (res.success) {
@@ -228,15 +228,17 @@ function App() {
       navigate("/login")
     }
     initData().then(res => dispatch(setData(res)))
-    fetch("https://webdevclothing.com/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => setNotifications(res.notifications))
+    if (user) {
+      fetch(`http://localhost:5001/notifications?email=${user.email}`).then(res => res.json()).then(res => setNotifications(res.notifications))
+    }
     return () => clearInterval(getNotifications)
   }, [])
 
   let getNotifications = setInterval(() => {},1)
-  const checkForNotifications = (notifications) => {
+  const checkForNotifications = (notifications, user) => {
     clearInterval(getNotifications)
     getNotifications = setInterval(() => {
-      fetch("https://webdevclothing.com/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => {
+      fetch(`http://localhost:5001/notifications?email=${user.email}`).then(res => res.json()).then(res => {
         if (JSON.stringify(res.notifications) != JSON.stringify(notifications)) {
           setNotifications(res.notifications)
           initData().then(res => dispatch(setData(res)))
@@ -245,14 +247,14 @@ function App() {
     }, 3000)
   }
   useEffect(() => {
-    checkForNotifications(notifications)
+    checkForNotifications(notifications, user)
     return () => clearInterval(getNotifications)
   }, [notifications])
   useEffect(() => {
   }, [data])
   const handleLogin = async (e) => {
     e.preventDefault()
-    const response = await fetch("https://webdevclothing.com/users/login", {
+    const response = await fetch("http://localhost:5001/users/login", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -273,8 +275,9 @@ function App() {
   const handleCreate = async (e) => {
     e.preventDefault()
     const token = searchParams.get("token")
+    console.log(token, searchParams)
     if (!token) alert("Invalid token")
-    const response = await fetch("https://webdevclothing.com/users/create", {
+    const response = await fetch("http://localhost:5001/users/create", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
