@@ -238,12 +238,14 @@ function App() {
   const checkForNotifications = (notifications, user) => {
     clearInterval(getNotifications)
     getNotifications = setInterval(() => {
-      fetch(`http://localhost:5001/notifications?email=${user.email}`).then(res => res.json()).then(res => {
-        if (JSON.stringify(res.notifications) != JSON.stringify(notifications)) {
-          setNotifications(res.notifications)
-          initData().then(res => dispatch(setData(res)))
-        }
-      })
+      if (user) {
+        fetch(`http://localhost:5001/notifications?email=${user.email}`).then(res => res.json()).then(res => {
+          if (JSON.stringify(res.notifications) != JSON.stringify(notifications)) {
+            setNotifications(res.notifications)
+            initData().then(res => dispatch(setData(res)))
+          }
+        })
+      }
     }, 3000)
   }
   useEffect(() => {
