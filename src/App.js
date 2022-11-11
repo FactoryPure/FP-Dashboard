@@ -42,11 +42,11 @@ function App() {
   }
   const initData = async () => {
     const result = {
-      products: await fetch("http://localhost:5001/products").then(res => res.json()),
-      collections: await fetch("http://localhost:5001/collections").then(res => res.json()),
+      products: await fetch("https://webdevclothing.com/products").then(res => res.json()),
+      collections: await fetch("https://webdevclothing.com/collections").then(res => res.json()),
     }
-    const shipping_brands = await fetch("http://localhost:5001/shipping").then(res => res.json())
-    const shipping_skus = await fetch("http://localhost:5001/shipping?table=skus").then(res => res.json())
+    const shipping_brands = await fetch("https://webdevclothing.com/shipping").then(res => res.json())
+    const shipping_skus = await fetch("https://webdevclothing.com/shipping?table=skus").then(res => res.json())
     result.products = result.products.map(p => {
       const matchingShippingProduct = shipping_skus.find(s => s.gid === p.gid) ? shipping_skus.find(s => s.gid === p.gid) : {}
       return {
@@ -214,7 +214,7 @@ function App() {
     const token = sessionStorage.getItem("session")
     const queryToken = searchParams.get("token")
     if (token) {
-      fetch(`http://localhost:5001/users/verify?token=${token}`)
+      fetch(`https://webdevclothing.com/users/verify?token=${token}`)
       .then(res => res.json())
       .then(res => {
         if (res.success) {
@@ -229,7 +229,7 @@ function App() {
     }
     initData().then(res => dispatch(setData(res)))
     if (user) {
-      fetch(`http://localhost:5001/notifications?email=${user.email}`).then(res => res.json()).then(res => setNotifications(res.notifications))
+      fetch(`https://webdevclothing.com/notifications?email=${user.email}`).then(res => res.json()).then(res => setNotifications(res.notifications))
     }
     return () => clearInterval(getNotifications)
   }, [])
@@ -239,7 +239,7 @@ function App() {
     clearInterval(getNotifications)
     getNotifications = setInterval(() => {
       if (user) {
-        fetch(`http://localhost:5001/notifications?email=${user.email}`).then(res => res.json()).then(res => {
+        fetch(`https://webdevclothing.com/notifications?email=${user.email}`).then(res => res.json()).then(res => {
           if (JSON.stringify(res.notifications) != JSON.stringify(notifications)) {
             setNotifications(res.notifications)
             initData().then(res => dispatch(setData(res)))
@@ -256,7 +256,7 @@ function App() {
   }, [data])
   const handleLogin = async (e) => {
     e.preventDefault()
-    const response = await fetch("http://localhost:5001/users/login", {
+    const response = await fetch("https://webdevclothing.com/users/login", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -279,7 +279,7 @@ function App() {
     const token = searchParams.get("token")
     console.log(token, searchParams)
     if (!token) alert("Invalid token")
-    const response = await fetch("http://localhost:5001/users/create", {
+    const response = await fetch("https://webdevclothing.com/users/create", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
