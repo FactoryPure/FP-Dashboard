@@ -6,7 +6,7 @@ export default function Topbar({ title, notifications }) {
     const user = useSelector(getUser)
     const showNotifications = () => {
         console.log(notifications)
-        fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/notifications", {
+        fetch("https://webdevclothing.com/notifications", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

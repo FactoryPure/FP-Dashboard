@@ -42,11 +42,11 @@ function App() {
   }
   const initData = async () => {
     const result = {
-      products: await fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/products").then(res => res.json()),
-      collections: await fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/collections").then(res => res.json()),
+      products: await fetch("https://webdevclothing.com/products").then(res => res.json()),
+      collections: await fetch("https://webdevclothing.com/collections").then(res => res.json()),
     }
-    const shipping_brands = await fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/shipping").then(res => res.json())
-    const shipping_skus = await fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/shipping?table=skus").then(res => res.json())
+    const shipping_brands = await fetch("https://webdevclothing.com/shipping").then(res => res.json())
+    const shipping_skus = await fetch("https://webdevclothing.com/shipping?table=skus").then(res => res.json())
     result.products = result.products.map(p => {
       const matchingShippingProduct = shipping_skus.find(s => s.gid === p.gid) ? shipping_skus.find(s => s.gid === p.gid) : {}
       return {
@@ -214,7 +214,7 @@ function App() {
     const token = sessionStorage.getItem("session")
     const queryToken = searchParams.get("token")
     if (token) {
-      fetch(`http://ec2-54-173-39-172.compute-1.amazonaws.com/users/verify?token=${token}`)
+      fetch(`https://webdevclothing.com/users/verify?token=${token}`)
       .then(res => res.json())
       .then(res => {
         if (res.success) {
@@ -228,7 +228,7 @@ function App() {
       navigate("/login")
     }
     initData().then(res => dispatch(setData(res)))
-    fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => setNotifications(res.notifications))
+    fetch("https://webdevclothing.com/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => setNotifications(res.notifications))
     return () => clearInterval(getNotifications)
   }, [])
 
@@ -236,7 +236,7 @@ function App() {
   const checkForNotifications = (notifications) => {
     clearInterval(getNotifications)
     getNotifications = setInterval(() => {
-      fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => {
+      fetch("https://webdevclothing.com/notifications?email=gjarman@factorypure.com").then(res => res.json()).then(res => {
         if (JSON.stringify(res.notifications) != JSON.stringify(notifications)) {
           setNotifications(res.notifications)
           initData().then(res => dispatch(setData(res)))
@@ -252,7 +252,7 @@ function App() {
   }, [data])
   const handleLogin = async (e) => {
     e.preventDefault()
-    const response = await fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/users/login", {
+    const response = await fetch("https://webdevclothing.com/users/login", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
@@ -274,7 +274,7 @@ function App() {
     e.preventDefault()
     const token = searchParams.get("token")
     if (!token) alert("Invalid token")
-    const response = await fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/users/create", {
+    const response = await fetch("https://webdevclothing.com/users/create", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

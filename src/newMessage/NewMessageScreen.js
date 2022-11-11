@@ -39,7 +39,7 @@ export default function NewMessageScreen({ user, type, products, brands }) {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch("http://ec2-54-173-39-172.compute-1.amazonaws.com/shipping", {
+        fetch("https://webdevclothing.com/shipping", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
