@@ -46,7 +46,7 @@ export default function Variant({ productTitle, variant }) {
     const deleteShipping = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://webdevclothing.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ export default function Variant({ productTitle, variant }) {
     const deleteDefault = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://webdevclothing.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -84,7 +84,7 @@ export default function Variant({ productTitle, variant }) {
     const deleteOverride = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://webdevclothing.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

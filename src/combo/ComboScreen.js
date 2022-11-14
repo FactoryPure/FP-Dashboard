@@ -7,6 +7,8 @@ import { getUser } from "../redux/user"
 import GroupByShipping from "./GroupByShipping"
 import UnGrouped from "./UnGrouped"
 
+import "./ComboScreen.css"
+
 export default function ComboScreen({ title, items, products, search, setSearch, setScreen }) {
     const navigate = useNavigate()
     const [visibleItems, setVisibleItems] = useState(50)

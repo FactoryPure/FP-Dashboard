@@ -1,11 +1,14 @@
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Brand from "../brands/Brand"
 import Product from "../products/Product"
 import { setSelected } from "../redux/selected"
+import AddModal from "./AddModal"
 
 export default function GroupByShipping() {
     const dispatch = useDispatch()
     const { data, user } = useSelector(state => state)
+    const [addItem, setAddItem] = useState(null)
     const editShipping = (item, items, type, mode) => {
         const gids = items.map(i => i.gid)
         if (type === "product") {
@@ -27,7 +30,7 @@ export default function GroupByShipping() {
     const deleteShipping = (gids, table, mode) => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://webdevclothing.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'
@@ -42,6 +45,18 @@ export default function GroupByShipping() {
             })
             .catch(console.log)
         }
+    }
+    const addSku = (product, products, type, mode) => {
+        console.log(mode)
+        setAddItem({
+            ...product,
+            skus: products.map(p => p.gid),
+            type,
+            mode
+        })
+    }
+    const addBrand = () => {
+
     }
     const keys = Object.keys(data.productsDefaultMap).filter(key => key !== "ungrouped")
     const overrideKeys = Object.keys(data.productsOverrideMap).filter(key => key !== "ungrouped")
@@ -60,6 +75,7 @@ export default function GroupByShipping() {
     }
     return (
         <>
+        <AddModal addItem={addItem} setAddItem={setAddItem} />
         {overrideKeys.map(key => {
             const product = data.productsOverrideMap[key]
             const products = data.productsOverrideMap[key].products
@@ -96,6 +112,7 @@ export default function GroupByShipping() {
                             )}
                         </div>  
                         <div className="products__product__btn-box">
+                            <button className="products__product__button products__product__button--create" onClick={() => addSku(product, products, "product", "override")}>Add SKU</button>
                             <button className="products__product__button products__product__button--edit" onClick={() => editShipping(product, products, "product", "override")}>Edit</button>
                             <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(products.map(p => p.gid), "skus", "override")}>Delete</button>
                         </div>
@@ -143,6 +160,7 @@ export default function GroupByShipping() {
                             )}
                         </div> 
                         <div className="products__product__btn-box">
+                            <button className="products__product__button products__product__button--create" onClick={() => addSku(product, products, "product", "default")}>Add SKU</button>
                             <button className="products__product__button products__product__button--edit" onClick={() => editShipping(product, products, "product", "default")}>Edit</button>
                             <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(products.map(p => p.gid), "skus", "default")}>Delete</button>
                         </div>
@@ -191,6 +209,7 @@ export default function GroupByShipping() {
                             )}
                         </div>
                         <div className="products__product__btn-box">
+                            <button className="products__product__button products__product__button--create" onClick={() => addBrand(brand, brands, "brand", "override")}>Add Brand</button>
                             <button className="products__product__button products__product__button--edit" onClick={() => editShipping(brand, brands, "brand", "override")}>Edit</button>
                             <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(brands.map(b => b.gid), "brands", "override")}>Delete</button>
                         </div>
@@ -239,6 +258,7 @@ export default function GroupByShipping() {
                             )}
                         </div>
                         <div className="products__product__btn-box">
+                            <button className="products__product__button products__product__button--create" onClick={() => addBrand(brand, brands, "brand", "default")}>Add Brand</button>
                             <button className="products__product__button products__product__button--edit" onClick={() => editShipping(brand, brands, "brand", "default")}>Edit</button>
                             <button className="products__product__button products__product__button--delete" onClick={() => deleteShipping(brands.map(b => b.gid), "brands", "default")}>Delete</button>
                         </div>

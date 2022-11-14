@@ -39,7 +39,7 @@ export default function NewMessageScreen({ user, type, products, brands }) {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch("http://localhost:5001/shipping", {
+        fetch("https://webdevclothing.com/shipping", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

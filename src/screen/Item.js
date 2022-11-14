@@ -14,7 +14,7 @@ export default function Item({ type, user, item, setSelectedItem }) {
     const deleteShipping = () => {
         const confirm = window.confirm("Are you sure?")
         if (confirm) {
-            fetch("http://localhost:5001/shipping", {
+            fetch("https://webdevclothing.com/shipping", {
                 method: "DELETE",
                 headers: {
                     'Content-Type': 'application/json'

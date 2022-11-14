@@ -5,11 +5,11 @@ export default function Users({ user }) {
     const [users, setUsers] = useState([])
     const [showCreate, setShowCreate] = useState(false)
     useEffect(() => {
-        fetch("http://localhost:5001/users").then(res => res.json()).then(setUsers)
+        fetch("https://webdevclothing.com/users").then(res => res.json()).then(setUsers)
     }, [])
     const createUser = (e) => {
         e.preventDefault()
-        fetch("http://localhost:5001/users/setup", {
+        fetch("https://webdevclothing.com/users/setup", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
