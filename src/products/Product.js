@@ -126,18 +126,6 @@ export default function Product({ product }) {
                             : null
                     }
                 >{product.title}</h3>
-                <div style={{width: "70%"}} className="products__product__btn-box">
-                    {(product.pdp_line_1 || product.pdp_line_2 || product.cart_line_1 || product.cart_line_2) 
-                        ? (
-                            <>
-                                <button className="products__product__button products__product__button--edit" onClick={editShipping}>Edit</button>
-                                <button className="products__product__button products__product__button--delete" onClick={deleteShipping}>Delete</button>
-                            </>
-                        )
-                        : (
-                            <button className="products__product__button products__product__button--create" onClick={createShipping}>Create</button>
-                        )}
-                </div>
                 {hasDetails(product) && (
                     <div class="products__product__details">
                         <div class="products__product__details__heading-row">
@@ -206,6 +194,18 @@ export default function Product({ product }) {
                         </div>
                     </div>
                 )}
+                <div className="products__product__btn-box">
+                    {hasDetails(product) || hasOverride(product)
+                        ? (
+                            <>
+                                <button className="products__product__button products__product__button--edit" onClick={editShipping}>Edit</button>
+                                <button className="products__product__button products__product__button--delete" onClick={deleteShipping}>Delete</button>
+                            </>
+                        )
+                        : (
+                            <button className="products__product__button products__product__button--create" onClick={createShipping}>Create</button>
+                        )}
+                </div>
             </div>
             {(product.skus && product.skus.length > 1) && (
                 <div className="products__variants">

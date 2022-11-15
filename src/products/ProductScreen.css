@@ -66,7 +66,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    
+    width: 100%;
 }
 .products__product__preview {
     display: flex;
@@ -139,11 +139,7 @@
 .products__variants__variant h3 {
     font-size: 16px;
     font-weight: 700;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: hidden;
-    width: 292px;
-    max-width: 292px;
+    width: 100%;
 }
 .products__product__title--pointer {
     cursor: pointer;

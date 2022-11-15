@@ -109,18 +109,6 @@ export default function Brand({ brand, products, setSearch }) {
         <div className="products__product">
             <div className="products__product__main">
                 <h3 class="brands__product__title--pointer" onClick={toggleProduct}>{brand.brandTitle} ({relatedProducts.length})</h3>
-                <div style={{width: "70%"}} className="products__product__btn-box">
-                    {hasDetails(brand)
-                        ? (
-                            <>
-                                <button className="products__product__button products__product__button--edit" onClick={editShipping}>Edit</button>
-                                <button className="products__product__button products__product__button--delete" onClick={deleteShipping}>Delete</button>
-                            </>
-                        )
-                        : (
-                            <button className="products__product__button products__product__button--create" onClick={createShipping}>Create</button>
-                        )}
-                </div>
                 {hasDetails(brand) && (
                     <div class="products__product__details">
                         <div class="products__product__details__heading-row">
@@ -189,6 +177,18 @@ export default function Brand({ brand, products, setSearch }) {
                         </div>
                     </div>
                 )}
+                <div className="products__product__btn-box">
+                    {hasDetails(brand) || hasOverride(brand)
+                        ? (
+                            <>
+                                <button className="products__product__button products__product__button--edit" onClick={editShipping}>Edit</button>
+                                <button className="products__product__button products__product__button--delete" onClick={deleteShipping}>Delete</button>
+                            </>
+                        )
+                        : (
+                            <button className="products__product__button products__product__button--create" onClick={createShipping}>Create</button>
+                        )}
+                </div>
             </div>
         </div>
         </>

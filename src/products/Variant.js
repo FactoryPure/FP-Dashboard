@@ -103,18 +103,6 @@ export default function Variant({ productTitle, variant }) {
     return (
         <div className="products__variants__variant">
             <h3>{variant.sku} - {variant.title}</h3>
-            <div style={{width: "70%"}} className="products__product__btn-box">
-                {(hasDetails(variant) || hasOverride(variant)) 
-                    ? (
-                        <>
-                            <button className="products__product__button products__product__button--edit" onClick={editShipping}>Edit</button>
-                            <button className="products__product__button products__product__button--delete" onClick={deleteShipping}>Delete</button>
-                        </>
-                    )
-                    : (
-                        <button className="products__product__button products__product__button--create" onClick={createShipping}>Create</button>
-                    )}
-            </div>
             {hasDetails(variant) && (
                     <div class="products__product__details">
                         <div class="products__product__details__heading-row">
@@ -183,6 +171,18 @@ export default function Variant({ productTitle, variant }) {
                         </div>
                     </div>
                 )}
+            <div className="products__product__btn-box">
+                {(hasDetails(variant) || hasOverride(variant)) 
+                    ? (
+                        <>
+                            <button className="products__product__button products__product__button--edit" onClick={editShipping}>Edit</button>
+                            <button className="products__product__button products__product__button--delete" onClick={deleteShipping}>Delete</button>
+                        </>
+                    )
+                    : (
+                        <button className="products__product__button products__product__button--create" onClick={createShipping}>Create</button>
+                    )}
+            </div>
         </div>
     )
 }
