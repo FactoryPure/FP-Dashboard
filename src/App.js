@@ -251,7 +251,7 @@ function App() {
   useEffect(() => {
     checkForNotifications(notifications, user)
     return () => clearInterval(getNotifications)
-  }, [notifications])
+  }, [notifications, user])
   useEffect(() => {
   }, [data])
   const handleLogin = async (e) => {
