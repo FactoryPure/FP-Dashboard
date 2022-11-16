@@ -133,7 +133,8 @@ function App() {
           cart_line_1: p.cart_line_1,
           cart_line_2: p.cart_line_2,
           message_id: p.message_id,
-          end_date: p.end_date
+          end_date: p.end_date,
+          last_updated: p.last_updated
         }
         result.productsDefaultMap[messageId] = {
           ...body,
@@ -154,7 +155,8 @@ function App() {
           or_cart_line_1: p.or_cart_line_1,
           or_cart_line_2: p.or_cart_line_2,
           or_message_id: p.or_message_id,
-          or_end_date: p.or_end_date
+          or_end_date: p.or_end_date,
+          last_updated: p.last_updated
         }
         result.productsOverrideMap[messageId] = {
           ...body,
@@ -175,7 +177,8 @@ function App() {
           cart_line_1: b.cart_line_1,
           cart_line_2: b.cart_line_2,
           message_id: b.message_id,
-          end_date: b.end_date
+          end_date: b.end_date,
+          last_updated: b.last_updated
         }
         result.brandsDefaultMap[messageId] = {
           ...body,
@@ -197,7 +200,8 @@ function App() {
           or_cart_line_1: b.or_cart_line_1,
           or_cart_line_2: b.or_cart_line_2,
           or_message_id: b.or_message_id,
-          or_end_date: b.or_end_date
+          or_end_date: b.or_end_date,
+          last_updated: b.last_updated
         }
         result.brandsOverrideMap[messageId] = {
           ...body,

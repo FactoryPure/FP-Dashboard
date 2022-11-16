@@ -38,7 +38,7 @@ export default function Modal() {
                 gids,
                 ...formData,
                 email: user.email,
-                table: selected.type === "Product" ? "skus" : "brands",
+                table: selected.type && selected.type.toLowerCase() === "product" ? "skus" : "brands",
                 override: mode === "override"
             })
         })
@@ -55,6 +55,7 @@ export default function Modal() {
     }
     useEffect(() => {
         if (selected) {
+            setMode(selected.mode)
             setFormData({
                 ...formData,
                 mode,

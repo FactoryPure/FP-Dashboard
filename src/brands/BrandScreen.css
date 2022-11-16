@@ -187,3 +187,7 @@
 .brands__end--ended {
     color: rgb(180,0,0);
 }
+.brands__alert {
+    font-weight: 700;
+    color: rgb(180,0,0);
+}

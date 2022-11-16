@@ -27,9 +27,15 @@ export default function BrandScreen({ user, brands, products, setSelectedItem, s
         return () => loadObserver.disconnect()
     }, [visibleBrands, filteredBrands])
     useEffect(() => {
-        if (document.querySelector(".js-loadmore")) document.querySelector(".js-loadmore").style.display = ""
-        setVisibleBrands(50)
-        setFilteredBrands(brands.filter(b => b.brandTitle.toLowerCase().includes(search.toLowerCase())))
+        if (search === "::ALERTS") {
+            if (document.querySelector(".js-loadmore")) document.querySelector(".js-loadmore").style.display = ""
+            setVisibleBrands(50)
+            setFilteredBrands(brands.filter(b => !b.gid))
+        } else {
+            if (document.querySelector(".js-loadmore")) document.querySelector(".js-loadmore").style.display = ""
+            setVisibleBrands(50)
+            setFilteredBrands(brands.filter(b => b.brandTitle.toLowerCase().includes(search.toLowerCase())))
+        }
     }, [search])
     const Mag = () => {
         return (
@@ -60,6 +66,8 @@ export default function BrandScreen({ user, brands, products, setSelectedItem, s
                     />
                     <Mag />
                 </div>
+                <label>Show Alerts Only</label>
+                <input type="checkbox" onChange={() => search === "::ALERTS" ? setSearch("") : setSearch("::ALERTS")} />
             </div>
             <div className="products__main">
                 {filteredBrands.slice(0, visibleBrands).map((b, index) => <Brand user={user} brand={b} products={products} key={b.title + "-" + index} setSelectedItem={setSelectedItem} setScreen={setScreen} search={search} setSearch={setSearch} />)}

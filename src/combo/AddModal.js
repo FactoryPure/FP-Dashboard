@@ -5,6 +5,7 @@ export default function AddModal({ addItem, setAddItem }) {
     const { data, user } = useSelector(state => state)
     const [search, setSearch] = useState("")
     const [filteredProducts, setFilteredProducts] = useState(data.products)
+    const [filteredBrands, setFilteredBrands] = useState(data.brands)
     const [selectedGIDs, setSelectedGIDs] = useState({
         gids: [],
         titles: []
@@ -39,19 +40,36 @@ export default function AddModal({ addItem, setAddItem }) {
         })
     }
     const toggleSelect = (product) => {
-        if (selectedGIDs.gids.includes(product.gid)) {
-            setSelectedGIDs({
-                titles: selectedGIDs.titles.filter(t => t !== product.title),
-                gids: selectedGIDs.gids.filter(g => g !== product.gid)
-            })
+        if (product.brandTitle) {
+            if (selectedGIDs.gids.includes(product.gid)) {
+                setSelectedGIDs({
+                    titles: selectedGIDs.titles.filter(t => t !== product.brandTitle),
+                    gids: selectedGIDs.gids.filter(g => g !== product.gid)
+                })
+            } else {
+                setSelectedGIDs({
+                    titles: [...selectedGIDs.titles, product.brandTitle],
+                    gids: [...selectedGIDs.gids, product.gid]
+                })
+            }
         } else {
-            setSelectedGIDs({
-                titles: [...selectedGIDs.titles, product.title],
-                gids: [...selectedGIDs.gids, product.gid]
-            })
+            if (selectedGIDs.gids.includes(product.gid)) {
+                setSelectedGIDs({
+                    titles: selectedGIDs.titles.filter(t => t !== product.title),
+                    gids: selectedGIDs.gids.filter(g => g !== product.gid)
+                })
+            } else {
+                setSelectedGIDs({
+                    titles: [...selectedGIDs.titles, product.title],
+                    gids: [...selectedGIDs.gids, product.gid]
+                })
+            }
         }
     }
     const handleBulkProducts = () => {
+
+    }
+    const handleBulkBrands = () => {
 
     }
     const [bulk, setBulk] = useState(false)
@@ -117,9 +135,9 @@ export default function AddModal({ addItem, setAddItem }) {
                         </>
                     :
                         <>
-                            {/* <div style={{ marginTop: "16px" }} class="new-message__form__row new-message__form__row--flex">
+                             <div style={{marginTop: "16px"}} class="new-message__form__row new-message__form__row--flex">
                                 <p class="new-message__form__row__title">Selected Brands</p>
-                                <input type="text" onChange={(e) => setSearch(e.target.value)} placeholder="filter" />
+                                <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="filter" />
                             </div>
                             <div class="new-message__list">
                                 {filteredBrands.map(b => {
@@ -133,13 +151,22 @@ export default function AddModal({ addItem, setAddItem }) {
                                     )
                                 })}
                             </div>
-                            <p onClick={() => setBulk(!bulk)}>{bulk ? "Hide bulk editor" : "Show bulk editor"}</p>
-                            {bulk && <textarea class="modal__textarea" onChange={handleBulkBrands}></textarea>}                     */}
+                            {/* <p onClick={() => setBulk(!bulk)}>{bulk ? "Hide bulk editor" : "Show bulk editor"}</p> */}
+                            {bulk && <textarea class="modal__textarea" onChange={handleBulkBrands}></textarea>}
+                            <button class="additional-modal__submit" onClick={handleSubmit}>SUBMIT</button>
                         </>
                     }
                     </div>
                     <div class="additional-modal__inner__toAdd">
-                        {selectedGIDs.titles.map(t => <p>{t}</p>)}
+                        {selectedGIDs.titles.map((t, idx) => {
+                            const item = {
+                                title: t,
+                                gid: selectedGIDs.gids[idx]
+                            }
+                            return (
+                                <p style={{cursor: "pointer"}} onClick={() => toggleSelect(item)}>{t}</p>
+                            )
+                        })}
                     </div>
                 </div>
             </div>

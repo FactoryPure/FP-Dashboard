@@ -109,6 +109,11 @@ export default function Brand({ brand, products, setSearch }) {
         <div className="products__product">
             <div className="products__product__main">
                 <h3 class="brands__product__title--pointer" onClick={toggleProduct}>{brand.brandTitle} ({relatedProducts.length})</h3>
+                {!brand.gid && 
+                    <div className="brands__alert">
+                        THIS BRAND HAS NO CORRESPONDING COLLECTION - THIS MUST BE FIXED IN SHOPIFY
+                    </div>    
+                }
                 {hasDetails(brand) && (
                     <div class="products__product__details">
                         <div class="products__product__details__heading-row">
