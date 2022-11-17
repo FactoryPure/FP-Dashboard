@@ -55,7 +55,6 @@ export default function Modal() {
     }
     useEffect(() => {
         if (selected) {
-            setMode(selected.mode)
             setFormData({
                 ...formData,
                 mode,
