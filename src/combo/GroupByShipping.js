@@ -5,7 +5,7 @@ import Product from "../products/Product"
 import { setSelected } from "../redux/selected"
 import AddModal from "./AddModal"
 
-export default function GroupByShipping() {
+export default function GroupByShipping({ filteredItems, visibleItems }) {
     const dispatch = useDispatch()
     const { data, user } = useSelector(state => state)
     const [addItem, setAddItem] = useState(null)
@@ -103,7 +103,14 @@ export default function GroupByShipping() {
             last_updated: data.brandsOverrideMap[key].last_updated
         })
     }
-    allItems = allItems.sort((a, b) => {
+    console.log(allItems)
+    allItems = allItems.filter(i => filteredItems.find(f => {
+
+            return (i.product && f.message_id === i.product.message_id) ||
+                (i.product && f.or_message_id === i.product.or_message_id) ||
+                (i.brand && f.message_id === i.brand.message_id) ||
+                (i.brand && f.or_message_id === i.brand.or_message_id)
+        })).sort((a, b) => {
         return a.last_updated < b.last_updated ? 1 : -1
     })
     const toggleAccordion = ({ target }) => {

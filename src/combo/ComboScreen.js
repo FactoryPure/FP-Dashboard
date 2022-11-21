@@ -82,7 +82,7 @@ export default function ComboScreen({ title, items, products, search, setSearch,
                 </select>
             </div>
             {grouping === "message_id" ? 
-                <GroupByShipping />
+                <GroupByShipping filteredItems={filteredItems} visibleItems={visibleItems} />
             :
                 <UnGrouped filteredItems={filteredItems} visibleItems={visibleItems} search={search} setSearch={setSearch} products={products} setScreen={setScreen} />
             }

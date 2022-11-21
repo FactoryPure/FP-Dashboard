@@ -90,38 +90,48 @@ function App() {
     const noShipping = comboArray.filter(c => !hasDetails(c))
     result.brands = [...hasShipping, ...noShipping]
     const endingProducts = result.products.filter(p => {
-      if (p.end_date) {
-        const endDate = new Date(p.end_date).getTime()
-        const alertTime = Date.now() + (86400000 * 4)
-        if (endDate <= alertTime) {
-          return true
-        }
-      }
-      if (p.or_end_date) {
-        const overrideEndDate = new Date(p.or_end_date).getTime()
-        const alertTime = Date.now() + (86400000 * 4)
-        if (overrideEndDate <= alertTime) {
-          return true
-        }
-      }
-      return false
+      // if (p.end_date) {
+      //   const endDate = new Date(p.end_date).getTime()
+      //   const alertTime = Date.now() + (86400000 * 4)
+      //   if (endDate <= alertTime) {
+      //     return true
+      //   }
+      // }
+      // if (p.or_end_date) {
+      //   const overrideEndDate = new Date(p.or_end_date).getTime()
+      //   const alertTime = Date.now() + (86400000 * 4)
+      //   if (overrideEndDate <= alertTime) {
+      //     return true
+      //   }
+      // }
+      // return false
+      return p.end_date || p.or_end_date
     })
     const endingBrands = result.brands.filter(b => {
-      if (b.end_date) {
-        const endDate = new Date(b.end_date).getTime()
-        const alertTime = Date.now() + (86400000 * 4)
-        if (endDate <= alertTime) {
-          return true
-        }
-      }
-      return false
+      // if (b.end_date) {
+      //   const endDate = new Date(b.end_date).getTime()
+      //   const alertTime = Date.now() + (86400000 * 4)
+      //   if (endDate <= alertTime) {
+      //     return true
+      //   }
+      // }
+      return b.end_date || b.or_end_date
     })
-    result.ending = [...endingProducts, ...endingBrands]
+    result.ending = [...endingProducts, ...endingBrands].sort((a, b) => {
+      const aEnd = a.end_date ? new Date(a.end_date).getTime() : Infinity
+      const aOrEnd = a.or_end_date ? new Date(a.or_end_date).getTime() : Infinity
+      const aSoonest = aEnd < aOrEnd ? aEnd : aOrEnd
+      const bEnd = b.end_date ? new Date(b.end_date).getTime() : Infinity
+      const bOrEnd = b.or_end_date ? new Date(b.or_end_date).getTime() : Infinity
+      const bSoonest = bEnd < bOrEnd ? bEnd : bOrEnd
+      console.log(aSoonest, bSoonest)
+      return aSoonest > bSoonest ? 1 : -1
+    })
     result.all_messages = [
       ...result.products.filter(c => hasDetails(c) || c.skus.find(s => hasDetails(s))), 
       ...result.brands.filter(c => hasDetails(c))
     ]
-
+    console.log(result)
     result.productsDefaultMap = {}
     result.products.forEach(p => {
       const messageId = p.message_id ? p.message_id : 'ungrouped'
@@ -211,6 +221,12 @@ function App() {
       result.brandsOverrideMap[messageId].brands.push(b)
       result.brandsOverrideMap[messageId].title = `${result.brandsOverrideMap[messageId].or_message_id} (${result.brandsOverrideMap[messageId].brands.length})`
     })
+    const recentlyEdited = Date.now() - (1000 * 60 * 60 * 24 * 7)
+    result.recents = [
+      ...result.products.filter(p => p.last_updated && new Date(parseInt(p.last_updated)).getTime() > recentlyEdited),
+      ...result.brands.filter(b => b.last_updated && new Date(parseInt(b.last_updated)).getTime() > recentlyEdited)
+    ]
+    console.log(result.recents)
     return result
   }
 
@@ -327,8 +343,19 @@ function App() {
           <Route path="/ending" element={ 
             <ComboScreen 
               user={user}
-              title={"Ending Soon"} 
+              title={"Ending"} 
               items={data.ending} 
+              products={data.products} 
+              search={search} 
+              setSearch={setSearch} 
+              setScreen={setScreen} 
+            /> 
+          }/>
+          <Route path="/recent" element={ 
+            <ComboScreen 
+              user={user}
+              title={"Recently Edited"} 
+              items={data.recents} 
               products={data.products} 
               search={search} 
               setSearch={setSearch} 
