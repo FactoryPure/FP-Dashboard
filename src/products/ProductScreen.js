@@ -8,6 +8,7 @@ export default function ProductScreen({ user, products, setSelectedItem, search,
     const navigate = useNavigate()
     const [visibleProducts, setVisibleProducts] = useState(50)
     const [filteredProducts, setFilteredProducts] = useState(products)
+    const [showSku, setShowSku] = useState(false)
     useEffect(() => {
         const loadmore = document.querySelector(".js-loadmore")
         const loadObserver = new IntersectionObserver(entries => {
@@ -30,7 +31,10 @@ export default function ProductScreen({ user, products, setSelectedItem, search,
     useEffect(() => {
         if (document.querySelector(".js-loadmore")) document.querySelector(".js-loadmore").style.display = ""
         setVisibleProducts(50)
-        setFilteredProducts(products.filter(p => p.title.toLowerCase().includes(search.toLowerCase())))
+        setFilteredProducts(products.filter(p => {
+            if (p.title.toLowerCase().includes(search.toLowerCase())) return true
+            if (p.skus.find(s => s.sku && s.sku.toLowerCase().includes(search.toLowerCase()))) return true
+        }))
     }, [search, products])
     const Mag = () => {
         return (
@@ -61,9 +65,13 @@ export default function ProductScreen({ user, products, setSelectedItem, search,
                     />
                     <Mag />
                 </div>
+                <div class="products__showsku">
+                    <input type="checkbox" onChange={(e) => setShowSku(e.target.checked)} />
+                    <label>Show Sku Instead Of Title</label>
+                </div>
             </div>
             <div className="products__main">
-                {filteredProducts.slice(0, visibleProducts).map((p, index) => <Product user={user} product={p} key={p.title + "-" + index} setSelectedItem={setSelectedItem} />)}
+                {filteredProducts.slice(0, visibleProducts).map((p, index) => <Product user={user} product={p} key={p.title + "-" + index} setSelectedItem={setSelectedItem} showSku={showSku} />)}
                 <div class="js-loadmore loading">
                     <svg version="1.1" id="L3" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
                         viewBox="0 0 100 100" enableBackground="new 0 0 0 0">

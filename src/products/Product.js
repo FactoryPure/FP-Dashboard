@@ -26,7 +26,7 @@ const hasOverride = (item) => {
       }
       return false
 }
-export default function Product({ product }) {
+export default function Product({ product, showSku }) {
     const dispatch = useDispatch()
     const user = useSelector(getUser)
 
@@ -125,7 +125,7 @@ export default function Product({ product }) {
                             ? toggleAccordion
                             : null
                     }
-                >{product.title}</h3>
+                >{showSku ? product.skus[0].sku : product.title}</h3>
                 {hasDetails(product) && (
                     <div class="products__product__details">
                         <div class="products__product__details__heading-row">

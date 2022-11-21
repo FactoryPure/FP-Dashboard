@@ -217,3 +217,7 @@
     margin-bottom: 4px;
     cursor: pointer;
 }
+.products__showsku {
+    display: flex;
+    gap: 8px;
+}
