@@ -23,8 +23,9 @@ export default function Login({ handleLogin }) {
                     color: white;
                     font-weight: 700;
                     font-size: 24px;
-                    margin-top: 24px;
+                    margin-top: 16px;
                     box-shadow: 0px 4px 4px 0px #00000040;
+                    cursor: pointer;
                 }
                 .login__heading {
                     margin-top: 36px;
