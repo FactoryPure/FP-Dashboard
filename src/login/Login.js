@@ -7,8 +7,13 @@ export default function Login({ handleLogin }) {
               <input type="password" name="password" id="password" placeholder="password" />
               <button type="submit" class="login__submit">SUBMIT</button>
             </form>
+            <p class="login__forgot" onClick={() => alert("Tell Geoff and he will let you back in!")}>Forgot your password?</p>
             <style>
               {`
+                .login__forgot {
+                    text-align: center;
+                    margin-top: 16px;
+                }
                 .login__submit {
                     width: 100%;
                     border: 0;
@@ -18,7 +23,8 @@ export default function Login({ handleLogin }) {
                     color: white;
                     font-weight: 700;
                     font-size: 24px;
-                    margin-top: 36px;
+                    margin-top: 24px;
+                    box-shadow: 0px 4px 4px 0px #00000040;
                 }
                 .login__heading {
                     margin-top: 36px;
@@ -31,6 +37,7 @@ export default function Login({ handleLogin }) {
                 input:-webkit-autofill:focus, 
                 input:-webkit-autofill:active{
                     -webkit-box-shadow: 0 0 0 30px white inset, 0px 4px 4px 0px #00000040 !important;
+                    font-size: 16px !important;
                 }
                 .login {
                     display: flex;
@@ -50,6 +57,7 @@ export default function Login({ handleLogin }) {
                     background-color: white;
                     padding: 8px;
                     text-align: center;
+                    font-size: 16px;
                 }
                 body {
                   padding: 0;

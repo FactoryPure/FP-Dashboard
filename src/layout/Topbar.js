@@ -30,7 +30,7 @@ export default function Topbar({ title, notifications }) {
             </div>
             <h1 className="topbar__heading">{ title }</h1>
             <div onClick={showNotifications} class="topbar__notifications">
-                Notifications: {notifications.length}
+                {notifications && <>Notifications: {notifications.length}</>}
             </div>
         </div>
     )
