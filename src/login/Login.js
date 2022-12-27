@@ -13,6 +13,7 @@ export default function Login({ handleLogin }) {
                 .login__forgot {
                     text-align: center;
                     margin-top: 16px;
+                    cursor: pointer;
                 }
                 .login__submit {
                     width: 100%;
@@ -26,6 +27,12 @@ export default function Login({ handleLogin }) {
                     margin-top: 16px;
                     box-shadow: 0px 4px 4px 0px #00000040;
                     cursor: pointer;
+                    transition: all 0.5s;
+                }
+                .login__submit:hover {
+                    background-color: #50c742;
+                    opacity: 0.8;
+                    box-shadow: 0px 4px 4px 0px #000000;
                 }
                 .login__heading {
                     margin-top: 36px;
@@ -62,7 +69,7 @@ export default function Login({ handleLogin }) {
                 }
                 body {
                   padding: 0;
-                  background: linear-gradient(270deg, #92B3D1 0%, rgba(137, 208, 5, 0.3) 60%, rgba(137, 191, 5, 0) 100%);
+                  background: linear-gradient(270deg, #92B3D1 0%, rgba(137, 208, 5, 0.3) 60%, rgba(255, 255, 255, 0.7) 100%);
                 }
                 body::after {
                     content: '';
@@ -71,8 +78,8 @@ export default function Login({ handleLogin }) {
                     height: 100%;
                     left: 0;
                     top: 0;
-                    background-size: 40px 40px;
-                    background-image: linear-gradient(to right, #EEEEEE 1px, transparent 2px), linear-gradient(to bottom, #EEEEEE 2px, transparent 1px);
+                    background-size: 50px 50px;
+                    background-image: linear-gradient(to right, #EEEEEE 2px, transparent 2px), linear-gradient(to bottom, #EEEEEE 2px, transparent 2px);
                     z-index: -1;
                     mix-blend-mode: color-burn;
                     pointer-events: none;
