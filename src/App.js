@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { setData, getData } from './redux/data';
 import { getUser, setUser } from './redux/user';
 import { getSelected } from './redux/selected';
+import Login from './login/Login';
+import Topbar from './layout/Topbar';
 
 function App() {
   const navigate = useNavigate()
@@ -402,18 +404,8 @@ function App() {
       <Routes>
         <Route path="/login" element={
           <>
-            <form onSubmit={handleLogin} class="login">
-              <input type="email" name="email" id="email" placeholder="email" />
-              <input type="password" name="password" id="password" placeholder="password" />
-              <button type="submit">SUBMIT</button>
-            </form>
-            <style>
-              {`
-                body {
-                  padding: 0;
-                }
-              `}
-            </style>
+            <Topbar title={"Dashboard"} />
+            <Login handleLogin={handleLogin}/>
           </>
         }/>
         <Route path="/create" element={
