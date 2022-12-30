@@ -17,14 +17,14 @@ export default function DescriptionApp({ clientMode }) {
   const [step, setStep] = useState(0)
   const { sections } = useSelector(state => state)
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '64px'}}>
+    <div class="description-app" style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '64px'}}>
         {clientMode && <style>{`
             body {
                 padding: 0;
                 overflow: auto;
             }
         `}</style>}
-      <div class="description-app" style={{display: 'flex', flexWrap: 'wrap', marginBottom: '48px', gap: '16px'}}>
+      <div style={{display: 'flex', flexWrap: 'wrap', marginBottom: '48px', gap: '16px'}}>
         <button style={step === 0 ? {backgroundColor: 'orange', color: 'white'} : {}} onClick={() => setStep(0)}>Product{sections.product && ' ✓'}</button>
         <button style={step === 1 ? {backgroundColor: 'orange', color: 'white'} : {}} onClick={() => setStep(1)}>Overview{sections.description.length > 0 && ' ✓'}</button>
         <button style={step === 2 ? {backgroundColor: 'orange', color: 'white'} : {}} onClick={() => setStep(2)}>Checkmarks{sections.checkmarks.length > 0 && ' ✓'}</button>
