@@ -28,7 +28,7 @@ export default function Users({ user }) {
                 {showCreate &&<form onSubmit={createUser}>
                     <input type="email" name="email" id="email" />
                     <select name="type" id="type">
-                        <option value="User">User</option>
+                        <option value="Client">User</option>
                         <option value="Admin">Admin</option>
                         <option value="SuperAdmin">SuperAdmin</option>
                     </select>

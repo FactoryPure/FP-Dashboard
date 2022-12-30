@@ -13,6 +13,7 @@ import { getUser, setUser } from './redux/user';
 import { getSelected } from './redux/selected';
 import Login from './login/Login';
 import Topbar from './layout/Topbar';
+import DescriptionApp from './descriptions/DescriptionApp';
 
 function App() {
   const navigate = useNavigate()
@@ -325,6 +326,9 @@ function App() {
     <>
     {(user && data.products)
     ?
+    user.type === "Client" ? 
+      <DescriptionApp clientMode={true} />
+    :
       <Layout 
         notifications={notifications}
         screen={screen} 
@@ -332,6 +336,9 @@ function App() {
         title={"Shipping"}
       >
         <Routes>
+          <Route path="/descriptions" element={
+            <DescriptionApp clientMode={false} />
+          }/>
           <Route path="/all" element={
             <ComboScreen 
               title={"All"} 

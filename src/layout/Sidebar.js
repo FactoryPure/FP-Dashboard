@@ -50,6 +50,13 @@ export default function Sidebar() {
                 } 
                 onClick={() => navigate("/brands")}
             >Brands ({data.brands && data.brands.length})</div>
+            <div 
+                className={location.pathname === "/descriptions" 
+                    ? 'sidebar__menu__item sidebar__menu__item--selected'
+                    : 'sidebar__menu__item'
+                } 
+                onClick={() => navigate("/descriptions")}
+            >Descriptions</div>
         </div>
     )
 }
