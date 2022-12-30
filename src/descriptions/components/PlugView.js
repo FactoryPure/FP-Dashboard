@@ -33,12 +33,12 @@ export default function PlugView({ name, amount }) {
         <div class="pdp__description__plugs__row">
             <div class="pdp__description__plugs__row__container">
                 <div class="pdp__description__plugs__row__container__image-container">
-                    <img class="pdp__description__plugs__row__container__image-container__img" src={plugMap[name].image_url} alt="checkmark" width="auto" height="auto" loading="lazy"/>
+                    <img class="pdp__description__plugs__row__container__image-container__img" src={plugMap[name] && plugMap[name].image_url} alt="checkmark" width="auto" height="auto" loading="lazy"/>
                 </div>
                 <p class="pdp__description__plugs__row__container__text">&times;{amount}</p>
             </div>
             <div class="pdp__description__plugs__row__details">
-                <p class="pdp__description__plugs__row__details__name">{plugMap[name].name}</p>
+                <p class="pdp__description__plugs__row__details__name">{plugMap[name] && plugMap[name].name}</p>
                 <p class="pdp__description__plugs__row__details__type">({name})</p>
             </div>
         </div>
