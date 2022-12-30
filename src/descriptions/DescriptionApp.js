@@ -24,7 +24,7 @@ export default function DescriptionApp({ clientMode }) {
                 overflow: auto;
             }
         `}</style>}
-      <div style={{display: 'flex', flexWrap: 'wrap', marginBottom: '48px', gap: '16px'}}>
+      <div class="description-app" style={{display: 'flex', flexWrap: 'wrap', marginBottom: '48px', gap: '16px'}}>
         <button style={step === 0 ? {backgroundColor: 'orange', color: 'white'} : {}} onClick={() => setStep(0)}>Product{sections.product && ' ✓'}</button>
         <button style={step === 1 ? {backgroundColor: 'orange', color: 'white'} : {}} onClick={() => setStep(1)}>Overview{sections.description.length > 0 && ' ✓'}</button>
         <button style={step === 2 ? {backgroundColor: 'orange', color: 'white'} : {}} onClick={() => setStep(2)}>Checkmarks{sections.checkmarks.length > 0 && ' ✓'}</button>
