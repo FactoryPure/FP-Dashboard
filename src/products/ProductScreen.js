@@ -45,6 +45,16 @@ export default function ProductScreen({ user, products, setSelectedItem, search,
             </svg>
         )
     }
+    const resetAllProducts = ({ target }) => {
+        const confirm = window.confirm("Are you sure? This can take an hour or longer to complete.")
+        if (confirm) {
+            fetch("https://webdevclothing.com/sync/refreshproducts").then(() => {
+                target.remove()
+            }).catch(() => {
+                target.innerText = "Something went wrong"
+            })
+        }
+    }
     return (
         <div className="products">
             <div className="products__row">
@@ -69,6 +79,7 @@ export default function ProductScreen({ user, products, setSelectedItem, search,
                     <input type="checkbox" onChange={(e) => setShowSku(e.target.checked)} />
                     <label>Show Sku Instead Of Title</label>
                 </div>
+                <button class="products__product__button products__product__button--delete" onClick={resetAllProducts}>Refresh Products</button>
             </div>
             <div className="products__main">
                 {filteredProducts.slice(0, visibleProducts).map((p, index) => <Product user={user} product={p} key={p.title + "-" + index} setSelectedItem={setSelectedItem} showSku={showSku} />)}
