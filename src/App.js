@@ -108,7 +108,7 @@ function App() {
       //   }
       // }
       // return false
-      return p.end_date || p.or_end_date
+      return p.end_date || p.or_end_date || p.skus.find(s => s.end_date || s.or_end_date)
     })
     const endingBrands = result.brands.filter(b => {
       // if (b.end_date) {
