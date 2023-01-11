@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "https://fpdashboard.netlify.app/*"
+  to = "https://fpdash.com/:splat"
+  status = 301
+  force = true

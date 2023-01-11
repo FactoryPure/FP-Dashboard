@@ -1,4 +1,1 @@
 /* /index.html 200
-
-# redirect sub domain to main
-https://fpdashboard.netlify.app/* https://www.fpdash.com/:splat 301!
